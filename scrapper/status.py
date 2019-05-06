@@ -15,7 +15,7 @@ class Status:
         asyncio.get_event_loop().run_until_complete(self.get_groups())
 
     async def get_groups(self):
-
+        self.groups = {}
         async with aiohttp.request('GET', self.url) as resp:
             data = await resp.text()
         self.groups_url = data.split("\r\n")[1:]  # Retira a Primeira linha da tabela
@@ -66,16 +66,24 @@ class Status:
             print("Status not found", status)
             return "B"
 
+    def result_from_content(self, group):
+        if(len(self.groups[group]["content"]) == 0):
+            return None
+        else:
+            return self.groups[group]["content"][0]["result"]
+
     def display_result(self):
         data = ""
         entries = list(self.groups.keys())
         if len(entries) == 0:
             data = "B"*self.groups_num
-        if len(entries) == 1:
-            data = (self.mapStatus(self.groups[entries[0]]["content"][0]["result"]))*self.groups_num
 
-        for group in self.groups:
-            data += self.mapStatus(self.groups[group]["content"][0]["result"])
+        # Se tiver apenas um grupo colocar o painel inteiro
+        elif (len(entries) == 1):
+            data = (self.mapStatus(self.result_from_content(entries[0])))*(self.groups_num)
+        else:
+            for group in self.groups:
+                data += (self.mapStatus(self.result_from_content(group)))
 
         size = len(data)
         if(size < self.groups_num):
