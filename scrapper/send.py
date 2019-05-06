@@ -17,3 +17,5 @@ if __name__ == "__main__":
     send = Send("dev/ttyAMA0", 115200)
 
     send.send_string("RRRR")
+
+    send.close()
