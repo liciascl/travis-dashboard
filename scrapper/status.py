@@ -82,7 +82,7 @@ class Status:
 
             for group in self.order:
                 data += (self.mapStatus(self.result_from_content(group)))
-        print(entries)
+
         size = len(data)
         if(size < self.groups_num):
             data += "B"*(self.groups_num-size)
