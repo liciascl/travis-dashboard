@@ -13,7 +13,7 @@ byte ledPerGroup[] = {24, 24, 25, 25, 24, 24, 23, 25, 25, 25, 25, 13};
 // Define the array of leds
 CRGB leds[NUM_LEDS];
 int state = 0;
-
+String incomingString = "";
 void setup() {
 
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -21,9 +21,7 @@ void setup() {
   Serial.begin(115200);
 
   refresh_led("RRRGRRRRORRR");
-  Serial.println("foi");
-  delay(5000);
-  refresh_led_test();
+ 
 }
 
 void refresh_led(String str) {
@@ -42,7 +40,6 @@ void refresh_led(String str) {
 
       case 'R':
         leds[i + led_counter] = CRGB(120, 0, 00);
-        Serial.print("VERMEJO");
         break;
       case 'G':
         leds[i + led_counter] = CRGB(0, 120, 00);
@@ -78,10 +75,13 @@ void refresh_led_test() {
 }
 
 void loop() {
-
+  
   //    Get string from Rpi
-  if (mySerial.available()) {
-    refresh_led(mySerial.readString());
+  if (mySerial.available()>0) {
+
+    incomingString = mySerial.readString();
+    refresh_led(incomingString);
+    
   }
 
   delay(100);

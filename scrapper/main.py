@@ -16,8 +16,8 @@ def job():
     status.format_link()
 
     status.run()
-    status.display_result()
 
+    send.send_string(status.display_result())
 
 # def updateGroup():
 
@@ -31,10 +31,13 @@ status.display_result()
 
 send = Send(json_data["serial"]["interface"], json_data["serial"]["baud_rate"])
 # send = Send(json_data["serial"]["interface"], json_data["serial"]["baud_rate"])
-send.send_string("RRRR")
+
 
 schedule.every(1).seconds.do(job)
 
 while 1:
     schedule.run_pending()
     time.sleep(1)
+
+
+send.close()
