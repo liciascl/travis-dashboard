@@ -10,12 +10,15 @@ class Status:
         self.groups = {}
         self.groups_url = None
         self.groups_num = groups_num
+        self.order = []
 
     def get_groups_handler(self):
         asyncio.get_event_loop().run_until_complete(self.get_groups())
 
     async def get_groups(self):
         self.groups = {}
+        self.order = []
+
         async with aiohttp.request('GET', self.url) as resp:
             data = await resp.text()
         self.groups_url = data.split("\r\n")[1:]  # Retira a Primeira linha da tabela
@@ -23,7 +26,6 @@ class Status:
     def format_link(self):
 
         for lines in self.groups_url:
-
             try:
                 a = lines.split(",")
 
@@ -32,6 +34,7 @@ class Status:
                         a[1] = a[1][:-1]
                     link = "https://api.travis-ci.org/repos" + a[1].split("github.com")[1]+"/builds"
 
+                    self.order.append(a[0])
                     self.groups[a[0]] = {}
                     self.groups[a[0]]["link"] = link
             except:
@@ -68,7 +71,7 @@ class Status:
 
     def display_result(self):
         data = ""
-        entries = list(self.groups.keys())
+        entries = self.order
         if len(entries) == 0:
             data = "B"*self.groups_num
 
@@ -76,9 +79,10 @@ class Status:
         elif (len(entries) == 1):
             data = (self.mapStatus(self.result_from_content(entries[0])))*(self.groups_num)
         else:
-            for group in self.groups:
-                data += (self.mapStatus(self.result_from_content(group)))
 
+            for group in self.order:
+                data += (self.mapStatus(self.result_from_content(group)))
+        print(entries)
         size = len(data)
         if(size < self.groups_num):
             data += "B"*(self.groups_num-size)
