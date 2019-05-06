@@ -29,8 +29,9 @@ status.format_link()
 status.run()
 status.display_result()
 
+send = Send(json_data["serial"]["interface"], json_data["serial"]["baud_rate"])
 # send = Send(json_data["serial"]["interface"], json_data["serial"]["baud_rate"])
-
+send.send_string("RRRR")
 
 schedule.every(1).seconds.do(job)
 

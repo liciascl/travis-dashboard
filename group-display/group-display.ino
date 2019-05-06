@@ -2,13 +2,13 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX, TX
+#define GROUPS 12
 
-#define NUM_LEDS 300
+#define NUM_LEDS 282
 //the sum of ledPerGroup has to be the same as NUM_LEDS
-char ledPerGroup[GROUPS] = {25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25};
+byte ledPerGroup[] = {24, 24, 25, 25, 24, 24, 23, 25, 25, 25, 25, 13};
 
 #define DATA_PIN 3
-#define GROUPS 12
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
@@ -18,46 +18,68 @@ void setup() {
 
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   mySerial.begin(115200);
-  refresh_led("RGCRRGGCCGRR");
-  delay(1000);
-  refresh_led("OOOOOOOOOOOO");
+  Serial.begin(115200);
+
+  refresh_led("RRRGRRRRORRR");
+  Serial.println("foi");
+  delay(5000);
+  refresh_led_test();
 }
 
 void refresh_led(String str) {
+  int len = str.length();
+  Serial.println(str);
+  Serial.println(len);
+
   int i = 0;
-  unsigned int led_counter = 0;
-  while (str.length() > i && (led_counter < NUM_LEDS)) {
+  int led_counter = 0;
 
-    for (int j = 0; j < ledPerGroup[i]; j++) {
+  for (int j = 0; j < len; j++) {
+    Serial.println(ledPerGroup[j]);
 
-      switch (str.charAt(i)) {
+    for (int i = 0; i < ledPerGroup[j]; i++) {
+      switch (str[j]) {
 
       case 'R':
-        leds[j + led_counter] = CRGB(255, 255, 00);
+        leds[i + led_counter] = CRGB(120, 0, 00);
+        Serial.print("VERMEJO");
         break;
       case 'G':
-        leds[j + led_counter] = CRGB(0, 255, 00);
+        leds[i + led_counter] = CRGB(0, 120, 00);
         break;
       case 'C':
-        leds[j + led_counter] = CRGB(120, 120, 00);
+        leds[i + led_counter] = CRGB(0, 120, 50);
         break;
       case 'O':
-        leds[j + led_counter] = CRGB(0, 0, 0);
+        leds[i + led_counter] = CRGB(0, 0, 0);
         break;
       default:
-        leds[j + led_counter] = CRGB(0, 0, 0);
+        leds[i + led_counter] = CRGB(0, 0, 0);
       }
-
-      led_counter += 1;
     }
-
-    i += 1;
+    led_counter += ledPerGroup[j];
   }
+
   FastLED.show();
 }
+
+void refresh_led_test() {
+
+  int i = 0;
+  int led_counter = 0;
+  while (NUM_LEDS >= i) {
+
+    leds[i] = CRGB(0, 0, 120);
+
+    i++;
+  }
+
+  FastLED.show();
+}
+
 void loop() {
 
-  //  Get string from Rpi
+  //    Get string from Rpi
   if (mySerial.available()) {
     refresh_led(mySerial.readString());
   }

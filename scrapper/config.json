@@ -4,7 +4,7 @@
         "groups_num": 12
     },
     "serial": {
-        "interface": "/dev/tty1",
+        "interface": "/dev/AMA0",
         "baud_rate": 115200
     }
 }
