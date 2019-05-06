@@ -56,16 +56,3 @@ class Status:
     def run(self):
 
         asyncio.get_event_loop().run_until_complete(self.download_all_sites())
-
-
-if __name__ == "__main__":
-    status = Status("https://docs.google.com/spreadsheets/d/1oK-7ITXBQ40BhHO-izAtLTZBzcwrWoWWmYKwCIP9Z_g/export?format=csv")
-    status.get_groups_handler()
-    status.format_link()
-    status.run()
-    status.print_all()
-
-    # pass
-
-
-# GET https: // api.travis-ci.org/repos/xxxx/yyy/builds
