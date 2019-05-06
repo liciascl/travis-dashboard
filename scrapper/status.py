@@ -49,12 +49,6 @@ class Status:
                 tasks.append(task)
             await asyncio.gather(*tasks, return_exceptions=True)
 
-    # def print_all(self):
-    #     for group in self.groups:
-
-    #         print(group, json.loads(self.groups[group]["content"])[0]["result"])
-    #         self.groups[group]["content"] =
-
     def mapStatus(self, status):
         if(status == None):
             return "B"
@@ -89,6 +83,7 @@ class Status:
         if(size < self.groups_num):
             data += "B"*(self.groups_num-size)
         print(data)
+        return data
 
     def run(self):
 
