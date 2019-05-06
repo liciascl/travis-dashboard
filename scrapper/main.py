@@ -1,4 +1,6 @@
 from status import Status
+from send import Send
+
 import schedule
 import time
 import serial
@@ -9,25 +11,28 @@ with open("config.json") as file:
     json_data = json.load(file)
 
 
-if("url" not in json_data):
-    print("Url not defined, insert in config.json")
-    quit()
-
-
 def job():
+    status.get_groups_handler()
+    status.format_link()
+
     status.run()
-    status.print_all()
+    status.display_result()
 
 
-status = Status(json_data["url"])
+# def updateGroup():
+
+
+status = Status(json_data["url"], json_data["groups"]["groups_num"])
 status.get_groups_handler()
 status.format_link()
 
 status.run()
-status.print_all()
+status.display_result()
+
+# send = Send(json_data["serial"]["interface"], json_data["serial"]["baud_rate"])
 
 
-schedule.every(5).seconds.do(job)
+schedule.every(1).seconds.do(job)
 
 while 1:
     schedule.run_pending()

@@ -5,10 +5,11 @@ import aiohttp
 
 class Status:
 
-    def __init__(self, url):
+    def __init__(self, url, groups_num):
         self.url = url
         self.groups = {}
         self.groups_url = None
+        self.groups_num = groups_num
 
     def get_groups_handler(self):
         asyncio.get_event_loop().run_until_complete(self.get_groups())
@@ -38,7 +39,7 @@ class Status:
 
     async def download_site(self, session, url, group):
         async with session.get(url) as response:
-            self.groups[group]["content"] = await response.text()
+            self.groups[group]["content"] = json.loads(await response.text())
 
     async def download_all_sites(self):
         async with aiohttp.ClientSession() as session:
@@ -48,10 +49,38 @@ class Status:
                 tasks.append(task)
             await asyncio.gather(*tasks, return_exceptions=True)
 
-    def print_all(self):
-        for group in self.groups:
+    # def print_all(self):
+    #     for group in self.groups:
 
-            print(group, json.loads(self.groups[group]["content"])[0]["result"])
+    #         print(group, json.loads(self.groups[group]["content"])[0]["result"])
+    #         self.groups[group]["content"] =
+
+    def mapStatus(self, status):
+        if(status == None):
+            return "B"
+        elif(status == 0):
+            return "G"
+        elif(status == 1):
+            return "R"
+        else:
+            print("Status not found", status)
+            return "B"
+
+    def display_result(self):
+        data = ""
+        entries = list(self.groups.keys())
+        if len(entries) == 0:
+            data = "B"*self.groups_num
+        if len(entries) == 1:
+            data = (self.mapStatus(self.groups[entries[0]]["content"][0]["result"]))*self.groups_num
+
+        for group in self.groups:
+            data += self.mapStatus(self.groups[group]["content"][0]["result"])
+
+        size = len(data)
+        if(size < self.groups_num):
+            data += "B"*(self.groups_num-size)
+        print(data)
 
     def run(self):
 

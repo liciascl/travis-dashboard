@@ -1,3 +1,10 @@
 {
-    "url": "https://docs.google.com/spreadsheets/d/1oK-7ITXBQ40BhHO-izAtLTZBzcwrWoWWmYKwCIP9Z_g/export?format=csv"
+    "url": "https://docs.google.com/spreadsheets/d/1oK-7ITXBQ40BhHO-izAtLTZBzcwrWoWWmYKwCIP9Z_g/export?format=csv",
+    "groups": {
+        "groups_num": 12
+    },
+    "serial": {
+        "interface": "/dev/tty1",
+        "baud_rate": 115200
+    }
 }
