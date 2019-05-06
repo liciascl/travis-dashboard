@@ -19,7 +19,7 @@ void setup() {
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   mySerial.begin(115200);
   refresh_led("RGCRRGGCCGRR");
-  delay(5000);
+  delay(1000);
   refresh_led("OOOOOOOOOOOO");
 }
 
