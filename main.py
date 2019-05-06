@@ -4,13 +4,24 @@ import time
 import serial
 
 
+import json
+
+with open("config.json") as file:
+    json_data = json.load(file)
+
+
+if("url" not in json_data):
+    print("Url not defined, insert in config.json")
+    quit()
+
+
 def job():
     status.run()
     status.print_all()
 
 
-status = Status("https://docs.google.com/spreadsheets/d/1oK-7ITXBQ40BhHO-izAtLTZBzcwrWoWWmYKwCIP9Z_g/export?format=csv")
-status.get_groups()
+status = Status(json_data["url"])
+status.get_groups_handler()
 status.format_link()
 
 status.run()
