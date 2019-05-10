@@ -20,20 +20,26 @@ void setup() {
   mySerial.begin(115200);
   Serial.begin(115200);
 
-  refresh_led("RRRGRRRRORRR");
+  //refresh_led("RRRGRRRRORRR");
+  refresh_led_color(0,0,120);
+
+  
+  FastLED.show();
  
 }
 
+
+
 void refresh_led(String str) {
+  refresh_led_color(0,0,0);
   int len = str.length();
-  Serial.println(str);
-  Serial.println(len);
+ 
 
   int i = 0;
   int led_counter = 0;
 
   for (int j = 0; j < len; j++) {
-    Serial.println(ledPerGroup[j]);
+    
 
     for (int i = 0; i < ledPerGroup[j]; i++) {
       switch (str[j]) {
@@ -60,18 +66,17 @@ void refresh_led(String str) {
   FastLED.show();
 }
 
-void refresh_led_test() {
+void refresh_led_color(int r, int g, int b ) {
 
   int i = 0;
   int led_counter = 0;
   while (NUM_LEDS >= i) {
 
-    leds[i] = CRGB(0, 0, 120);
+    leds[i] = CRGB(r, g, b);
 
     i++;
   }
 
-  FastLED.show();
 }
 
 void loop() {
