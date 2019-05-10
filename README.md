@@ -1,4 +1,4 @@
-# TravisDashBoard
+# travis-dashboard
 Dashboard for fetching and displaying travis build status
 
 
