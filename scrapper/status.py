@@ -54,7 +54,7 @@ class Status:
 
     def mapStatus(self, status):
         if(status == None):
-            return "O"
+            return "C"
         elif(status == 0):
             return "G"
         elif(status == 1):
