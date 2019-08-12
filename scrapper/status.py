@@ -54,7 +54,7 @@ class Status:
 
     def mapStatus(self, status):
         if(status == None):
-            return "O"
+            return "C"
         elif(status == 0):
             return "G"
         elif(status == 1):
@@ -86,7 +86,9 @@ class Status:
         size = len(data)
         if(size < self.groups_num):
             data += "B"*(self.groups_num-size)
-        return data
+            
+            
+        return data[5::-1] + data[6:]
 
     def run(self):
 
