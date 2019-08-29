@@ -1,4 +1,5 @@
 #!/bin/sh
+cd /home/pi/travis-dashboard 
 git checkout git checkout master
 git pull origin master
 sudo apt-get update
